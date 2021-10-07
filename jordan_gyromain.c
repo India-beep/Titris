@@ -145,8 +145,8 @@ int main(void)
 uint8_t config_gyro_registers(){
     char buf[16];
 	uint8_t contents[1];
-    registerwrite(CTRL2_G, CTRL2_G_VAL, GYRO_SLAVE_ADDR); //defaults 0x11 0x00 // control register address, data value to write
-    registerwrite(CTRL5_G, CTRL5_G_VAL, GYRO_SLAVE_ADDR); //defaults 0x14 0x00 // X , X , slave address (r/w for your device)
+    registerwrite(CTRL2_G, CTRL2_G_VAL, GYRO_SLAVE_ADDR); 
+    registerwrite(CTRL5_G, CTRL5_G_VAL, GYRO_SLAVE_ADDR); 
     *contents = registerread(CTRL2_G, GYRO_SLAVE_ADDR);
 	HAL_UART_Transmit(&huart1, (uint8_t*)buf, sprintf(buf, "CTRL2_G: %p\n\r", *contents), HAL_MAX_DELAY);
     *contents = registerread(CTRL5_G, GYRO_SLAVE_ADDR);
@@ -185,7 +185,6 @@ uint8_t gyro_getxyz(){
 	//registerread(0x22, GYRO_SLAVE_ADDR);// GYROX_L Sensor
 	//registerread(0x23, GYRO_SLAVE_ADDR);// GYROX_H Sensor
 
-
 	*contents = (registerread(0x22, GYRO_SLAVE_ADDR)*256 + registerread(0x23, GYRO_SLAVE_ADDR))-1152;
 	if (*contents == 0){
 	HAL_UART_Transmit(&huart1, (uint8_t*)buf, sprintf(buf, "GYRO X MOVING NEGATIVE: %d\n\r", *contents), HAL_MAX_DELAY);
@@ -211,6 +210,8 @@ uint8_t gyro_getxyz(){
 	if (*contents == 63487){
 	HAL_UART_Transmit(&huart1, (uint8_t*)buf, sprintf(buf, "GYRO Z MOVING POSITIVE: %d\n\r", *contents), HAL_MAX_DELAY);
 	}
+	
+	return 0;
 }
 
 /**
