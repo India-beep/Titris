@@ -43,8 +43,9 @@ uint8_t registerread(uint8_t addr, uint16_t slave_addr){
 	if(HAL_I2C_Master_Receive(&hi2c2, slave_addr, &contents, 1, 100) != HAL_OK){
 	contents[1] = 0x00;
 	}
-
-	HAL_UART_Transmit(&huart1, (uint8_t*)buf, sprintf(buf, "Value: %p\n\r", *contents), HAL_MAX_DELAY);
+	
+	//if you want to print the value to screen
+	//HAL_UART_Transmit(&huart1, (uint8_t*)buf, sprintf(buf, "Value: %p\n\r", *contents), HAL_MAX_DELAY);
 
 	return contents;
 }
