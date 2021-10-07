@@ -68,6 +68,7 @@ PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* Private function prototypes -----------------------------------------------*/
 uint8_t config_gyro_registers();
+uint8_t reset_gyro_registers();
 uint8_t gyro_getxyz();
 uint8_t registerwrite(uint8_t, uint8_t, uint16_t);
 uint8_t registerread(uint8_t, uint16_t);
@@ -142,17 +143,6 @@ int main(void)
   }
   /* USER CODE END 3 */
 
-uint8_t config_gyro_registers(){
-    char buf[16];
-	uint8_t contents[1];
-    registerwrite(CTRL2_G, CTRL2_G_VAL, GYRO_SLAVE_ADDR); 
-    registerwrite(CTRL5_G, CTRL5_G_VAL, GYRO_SLAVE_ADDR); 
-    *contents = registerread(CTRL2_G, GYRO_SLAVE_ADDR);
-	HAL_UART_Transmit(&huart1, (uint8_t*)buf, sprintf(buf, "CTRL2_G: %p\n\r", *contents), HAL_MAX_DELAY);
-    *contents = registerread(CTRL5_G, GYRO_SLAVE_ADDR);
-    HAL_UART_Transmit(&huart1, (uint8_t*)buf, sprintf(buf, "CTRL5_G: %p\n\r", *contents), HAL_MAX_DELAY);
-}
-
 uint8_t registerwrite(uint8_t addr, uint8_t data, uint16_t slave_addr){
 	uint8_t ret=0;
 	uint8_t buf[] = {addr, data};
@@ -176,6 +166,34 @@ uint8_t registerread(uint8_t addr, uint16_t slave_addr){
 	}
 
 	return *contents;
+}
+
+uint8_t config_gyro_registers(){
+    char buf[16];
+    uint8_t contents[1];
+	
+    registerwrite(CTRL2_G, CTRL2_G_VAL, GYRO_SLAVE_ADDR); 
+    registerwrite(CTRL5_G, CTRL5_G_VAL, GYRO_SLAVE_ADDR); 
+	
+    *contents = registerread(CTRL2_G, GYRO_SLAVE_ADDR);
+    HAL_UART_Transmit(&huart1, (uint8_t*)buf, sprintf(buf, "CTRL2_G: %p\n\r", *contents), HAL_MAX_DELAY);
+	
+    *contents = registerread(CTRL5_G, GYRO_SLAVE_ADDR);
+    HAL_UART_Transmit(&huart1, (uint8_t*)buf, sprintf(buf, "CTRL5_G: %p\n\r", *contents), HAL_MAX_DELAY);
+}
+
+uint8_t reset_gyro_registers(){
+    char buf[16];
+    uint8_t contents[1];
+	
+    registerwrite(CTRL2_G, 0x00, GYRO_SLAVE_ADDR); 
+    registerwrite(CTRL5_G, 0x00, GYRO_SLAVE_ADDR); 
+	
+    *contents = registerread(CTRL2_G, GYRO_SLAVE_ADDR);
+    HAL_UART_Transmit(&huart1, (uint8_t*)buf, sprintf(buf, "CTRL2_G: %p\n\r", *contents), HAL_MAX_DELAY);
+	
+    *contents = registerread(CTRL5_G, GYRO_SLAVE_ADDR);
+    HAL_UART_Transmit(&huart1, (uint8_t*)buf, sprintf(buf, "CTRL5_G: %p\n\r", *contents), HAL_MAX_DELAY);
 }
 
 uint8_t gyro_getxyz(){
