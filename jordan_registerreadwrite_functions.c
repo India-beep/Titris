@@ -5,7 +5,7 @@ uint8_t registerread(uint8_t, uint8_t);
 
 int main(void)
     {
-  	configregisters();
+  	config_gyro_registers();
   	HAL_Delay(10000);
 
   	while (1){
