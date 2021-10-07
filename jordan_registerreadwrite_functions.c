@@ -1,7 +1,7 @@
 
 uint8_t config_gyro_registers();
-uint8_t registerwrite(uint8_t, uint8_t, uint8_t);
-uint8_t registerread(uint8_t, uint8_t);
+uint8_t registerwrite(uint8_t, uint8_t, uint16_t);
+uint8_t registerread(uint8_t, uint16_t);
 
 int main(void)
     {
