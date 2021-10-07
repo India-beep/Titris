@@ -18,7 +18,7 @@ int main(void)
 uint8_t config_gyro_registers(){
     registerwrite(0x11, 0xA2, 0xD4); //defaults 0x11 0x00 // control register address, data value to write
     registerwrite(0x14, 0x60, 0xD4); //defaults 0x14 0x00 // X , X , slave address (r/w for your device)
-    registerread(0x11, 0xD4);
+    registerread(0x11, 0xD4); //reads address 0x11 of 0xD4 device
     registerread(0x14, 0xD4);
 }
 
