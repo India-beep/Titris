@@ -1,4 +1,4 @@
-# Titris
+# Titris :shipit:
 Embedded Systems 2 project
 ## Overview of project
 Repository for an STM32 based games console.
