@@ -46,7 +46,6 @@ uint8_t registerwrite(uint8_t addr, uint8_t data, uint16_t slave_addr){
 
 uint8_t registerread(uint8_t addr, uint16_t slave_addr){
 	uint8_t contents[1];
-	char buf[16];
 
 	if(HAL_I2C_Master_Transmit(&hi2c2, slave_addr, &addr, 1, 100) != HAL_OK){
     contents[1] = 0x00;
