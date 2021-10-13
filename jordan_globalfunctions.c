@@ -3,15 +3,13 @@
 #include <stdio.h>
 #include <string.h>
 
-
 uint8_t config_SLAVE_registers();
 uint8_t registerwrite(uint8_t, uint8_t, uint16_t);
 uint8_t registerread(uint8_t, uint16_t);
-
+uint8_t memregisterread(uint8_t, uint16_t);
 
 int main(void)
 {
-
   	config_SLAVE_registers();
   	HAL_Delay(10000);
 
@@ -42,6 +40,22 @@ uint8_t registerwrite(uint8_t addr, uint8_t data, uint16_t slave_addr){
     ret=0x00; //error return to default
 	}
 	return ret;
+}
+
+/*
+Note that HAL_I2C_Mem_Read() is the only function capable of generating a repeated start condition in
+blocking mode. If a repeated start is required, it is not sufficient to call HAL_I2C_Master_Transmit()
+immediately followed by a call to HAL_I2C_Master_Receive().
+*/
+
+uint8_t memregisterread(uint8_t addr, uint16_t slave_addr){
+	uint8_t contents[1];
+
+	if(HAL_I2C_Mem_Read(&hi2c2, slave_addr, addr, I2C_MEMADD_SIZE_8BIT, &contents, 1, HAL_MAX_DELAY) != HAL_OK){
+	contents[1] = 0x00;
+	}
+
+	return *contents;
 }
 
 uint8_t registerread(uint8_t addr, uint16_t slave_addr){
