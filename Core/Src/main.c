@@ -22,6 +22,7 @@
 #include "main.h"
 #include "jordan_gyro.h"
 #include "Robert_ACC.h"
+#include "Charlie_humid.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -136,7 +137,10 @@ int main(void)
 
   	while (1){
   	gyro_getxyz(huart1);
-	ACC_Read(huart1);	
+	ACC_Read(huart1);
+	H_ReadID(huart1); // Test piece, comment out if annoying
+
+	HAL_Delay(100);  // C - added delay to avoid wall of text from accelerometer
 		
     }
     /* USER CODE BEGIN 3 */
