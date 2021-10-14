@@ -21,6 +21,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "jordan_gyro.h"
+#include "Robert_ACC.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -130,10 +131,13 @@ int main(void)
 
   	reset_gyro_registers(huart1);
   	config_gyro_registers(huart1);
+	config_ACC_registers(huart1);
   	HAL_Delay(5000);
 
   	while (1){
   	gyro_getxyz(huart1);
+	ACC_Read(huart1);	
+		
     }
     /* USER CODE BEGIN 3 */
   }
