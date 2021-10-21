@@ -133,13 +133,16 @@ int main(void)
   	reset_gyro_registers(huart1);
   	config_gyro_registers(huart1);
 	config_ACC_registers(huart1);
-  	HAL_Delay(5000);
+  	HAL_Delay(2000);
+
+	H_ReadID(huart1); // Test piece, comment out if annoying
+	H_Init(huart1);
 
   	while (1){
   	gyro_getxyz(huart1);
 	ACC_Read(huart1);
-	H_ReadID(huart1); // Test piece, comment out if annoying
 
+	H_Read(huart1);
 	HAL_Delay(100);  // C - added delay to avoid wall of text from accelerometer
 		
     }
