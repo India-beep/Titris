@@ -146,6 +146,7 @@ int jump(int cheight){
 		jval = 0;
 	}
 	if (cheight > 0) {return cheight-1;}
+	return cheight;
 }
 
 void game(){
