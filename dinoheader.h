@@ -23,20 +23,21 @@
 #define cols 64
 #define dsize 8
 #define dtall 9
+#define hsize 4
 
 extern int dispm[rows][cols];
 
-//oh heck dyanic dino sizes
-const int hsize=4, hurdlesloc=32;
+
 // NOTE IT DOES NOT LIKE DEFINES FOR THESE VALUES
 // translation / runtime error
 
 const uint8_t dinol[] = {0x1f, 0x3b, 0x3f, 0x3c, 0x7e, 0xfc, 0xa4, 0x26 , 0x30}; //binary dino left leg down
 const uint8_t dinor[] = {0x1f, 0x3b, 0x3f, 0x3c, 0x7e, 0xfc, 0xa4, 0x34 , 0x06}; //binary dino right leg down
-const uint8_t hurdle[] = {0xF, 0x9, 0x9}; //binary hurdle
+const uint8_t hurdle[] = {0xF, 0x9, 0x9, 0x9}; //binary hurdle
+//const uint8_t hurdle[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}; //big binary hurdle
 
 int (*ptr), i, j, jval=0, dheight, cheight=0, gameover=0,
-speed=100, hurdleloc=cols, dheight=rows-dtall, lr=0; // ptr only for UARTdrawdispm(); - DEBUGGING
+speed=50, hurdleloc=cols, dheight=rows-dtall, lr=0; // ptr only for UARTdrawdispm(); - DEBUGGING
 //speed of hurdle //jval is jump bool  //dheight pixel height of dino
 
 
@@ -103,7 +104,7 @@ void dinogen(int dheight, int cheight){
 void hurdlegen(int hurdleloc){
 	  int hheight = rows-hsize;
 	  int h[hsize];
-	  for (int hi=hheight; hi<rows; hi++){ //begins 8 rows from bottom
+	  for (int hi=hheight; hi<rows; hi++){ //begins 4 rows from bottom
 		  for (j=0; j<hsize;j++){
 			  //extract bits from dino to turn on and off pixel
 			  // ie 0x1f is 00011111 so will look like '000#####'
@@ -115,10 +116,10 @@ void hurdlegen(int hurdleloc){
 			  for(i=0;i<=hsize;i++) {
 				  h[i] = ((h[i] != 1) ? ' ' : '1');
 			  }
-			  if (hurdleloc < 4){
-				  if (h[hsize-j-1] == '1') (dispm[hi+2][hurdleloc-j-1] = 'X');
-			  }else{
+			  if (hurdleloc < hsize){
 				  if (h[hsize-j-1] == '1') (dispm[hi+1][hurdleloc-j-1] = 'X');
+			  }else{
+				  if (h[hsize-j-1] == '1') (dispm[hi][hurdleloc-j-1] = 'X');
 			  }
 		  }
 	  }
@@ -165,7 +166,7 @@ void game(){
 			/* animate running */
 			if (lr == 0) {lr = 1;} else if (lr == 1) { lr = 0; }
 			/* jval=1 when joystick moved up and if cheight = 0 */
-			if (hurdleloc == 15) jval = 1; //IMAGINE JUMP PRESSED HERE// current infin jump
+			if (hurdleloc == hsize*4-1) jval = 1; //IMAGINE JUMP PRESSED HERE// current infin jump
 			cheight = jump(cheight);
 			/*LAZY WAY should probably use hurdledel and make a dinodel for it to be proper*/
 			dispmgen();
@@ -179,7 +180,7 @@ void game(){
 			/*redraw dino*/
 			UARTdrawdispm();
 			//hurdleloc 9 (maybe10) is collision
-			if (((1<hurdleloc) && (hurdleloc < 11)) && (dheight-cheight >= 22)) {
+			if (((1<hurdleloc) && (hurdleloc < hsize*2+3)) && (cheight < hsize)) {
 			jUARTSEND("COLLISION");
 			gameover = 1;
 		}
