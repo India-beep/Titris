@@ -7,9 +7,9 @@
 #define CTRL2_B 0x11 //CTRL_REG2
 #define CTRL3_B 0x12 //CTRL_REG3
 //Data registers - provide data from sensor
-#define PRESS_XL 0x28 //PRESS_OUT_XL
-#define PRESS_L 0x29 //PRESS_OUT_L
-#define PRESS_H 0x2A //PRESS_OUT_H
+#define R_PRESS_XL 0x28 //PRESS_OUT_XL
+#define R_PRESS_L 0x29 //PRESS_OUT_L
+#define R_PRESS_H 0x2A //PRESS_OUT_H
 //Initialising functions
 uint8_t bar_on(UART_HandleTypeDef);
 uint8_t bar_use(UART_HandleTypeDef);
@@ -27,9 +27,9 @@ uint8_t bar_on(){
 //Function for collecting sensor data continuously
 uint8_t bar_use(){
 	  uint8_t contents[1];
-      uint8_t PRESS_XL = registerread(PRESS_XL, BAR_SAD); //PRESS_OUT_XL get data
-      uint8_t PRESS_L = registerread(PRESS_L, BAR_SAD); //PRESS_OUT_L get data
-      uint8_t PRESS_H = registerread(PRESS_H, BAR_SAD); //PRESS_OUT_H get data
+      uint8_t PRESS_XL = registerread(R_PRESS_XL, BAR_SAD); //PRESS_OUT_XL get data
+      uint8_t PRESS_L = registerread(R_PRESS_L, BAR_SAD); //PRESS_OUT_L get data
+      uint8_t PRESS_H = registerread(R_PRESS_H, BAR_SAD); //PRESS_OUT_H get data
       int div;
       div = (PRESS_H<<16)|(PRESS_L<<8)|(PRESS_XL); //Puts data bytes in order, refer to datasheet
       int PR = div/4096; //Converts to hPa, refer to datasheet
