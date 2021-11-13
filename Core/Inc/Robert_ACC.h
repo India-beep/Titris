@@ -8,6 +8,8 @@
 #ifndef INC_ROBERT_ACC_H_
 #define INC_ROBERT_ACC_H_
 
+#include <stdio.h>
+
 #define DEV_ADDR (uint8_t)0xD4
 
 /* WHO_AM_I address*/
