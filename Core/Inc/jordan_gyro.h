@@ -1,6 +1,8 @@
 #ifndef jordan_gyro
 #define jordan_gyro
 
+#include <stdio.h>
+
 #define CTRL2_G 0x11
 #define CTRL3_G 0x12
 #define CTRL4_G 0x13
