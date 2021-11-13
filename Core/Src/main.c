@@ -22,7 +22,7 @@
 #include "main.h"
 #include "jordan_gyro.h"
 #include "Robert_ACC.h"
-#include "Charlie_humid.h"
+//#include "Charlie_humid.h"
 #include "india_bar.h"
 #include "retarget.h"
 #include <stdio.h>
@@ -124,6 +124,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
+  RetargetInit(&huart1);
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -134,18 +135,18 @@ int main(void)
   	reset_gyro_registers(huart1);
   	config_gyro_registers(huart1);
 	config_ACC_registers(huart1);
-	bar_on(huart1);
-  	HAL_Delay(2000);
+	bar_on();
+  	//HAL_Delay(2000);
 
-	H_ReadID(huart1); // Test piece, comment out if annoying
-	H_Init(huart1);
+	//H_ReadID(huart1); // Test piece, comment out if annoying
+	//H_Init(huart1);
 
   	while (1){
   	gyro_getxyz(huart1);
 	ACC_Read(huart1);
-	bar_use(huart1);
+	bar_use();
 
-	H_Read(huart1);
+	//H_Read(huart1);
 	HAL_Delay(100);  // C - added delay to avoid wall of text from accelerometer
 		
     }
