@@ -1,5 +1,8 @@
 #ifndef india_bar
 #define india_bar
+//Libraries included to reduce warnings
+#include <stdio.h>
+#include "retarget.h"
 //Slave address of barometer for r/w
 #define BAR_SAD 0xBB
 //Control registers - turn sensor on and off
@@ -11,14 +14,14 @@
 #define R_PRESS_L 0x29 //PRESS_OUT_L
 #define R_PRESS_H 0x2A //PRESS_OUT_H
 //Initialising functions
-uint8_t bar_on(UART_HandleTypeDef);
-uint8_t bar_use(UART_HandleTypeDef);
-uint8_t bar_off(UART_HandleTypeDef);
+uint8_t bar_on();
+uint8_t bar_use();
+uint8_t bar_off();
 uint8_t registerwrite(uint8_t, uint8_t, uint16_t);
 uint8_t registerread(uint8_t, uint16_t);
+uint8_t memregisterread(uint8_t, uint16_t);
 //Function for turning sensor on
 uint8_t bar_on(){
-  	uint8_t contents[1];
     registerwrite(CTRL1_B, 0x10, BAR_SAD); //CTRL_REG1 on continuous mode
     registerwrite(CTRL2_B, 0x10, BAR_SAD); //CTRL_REG2 on continuous mode
     registerwrite(CTRL3_B, 0x04, BAR_SAD); //CTRL_REG3 on continuous mode
@@ -26,7 +29,6 @@ uint8_t bar_on(){
   }
 //Function for collecting sensor data continuously
 uint8_t bar_use(){
-	  uint8_t contents[1];
       uint8_t PRESS_XL = registerread(R_PRESS_XL, BAR_SAD); //PRESS_OUT_XL get data
       uint8_t PRESS_L = registerread(R_PRESS_L, BAR_SAD); //PRESS_OUT_L get data
       uint8_t PRESS_H = registerread(R_PRESS_H, BAR_SAD); //PRESS_OUT_H get data
@@ -37,7 +39,6 @@ uint8_t bar_use(){
     }
 //Function for turning sensor off
 uint8_t bar_off(){
-	  uint8_t contents[1];
      registerwrite(CTRL1_B, 0x00, BAR_SAD); //CTRL_REG1 set to off/reset
      registerwrite(CTRL2_B, 0x03, BAR_SAD); //CTRL_REG2 set to off/reset
      registerwrite(CTRL3_B, 0x00, BAR_SAD); //CTRL_REG3 set to off/reset
