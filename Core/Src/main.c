@@ -22,7 +22,7 @@
 #include "main.h"
 #include "jordan_gyro.h"
 #include "Robert_ACC.h"
-//#include "Charlie_humid.h"
+#include "peter_mag.h"
 #include "india_bar.h"
 #include "retarget.h"
 #include <stdio.h>
@@ -136,19 +136,16 @@ int main(void)
   	config_gyro_registers(huart1);
 	config_ACC_registers(huart1);
 	bar_on();
-  	//HAL_Delay(2000);
-
-	//H_ReadID(huart1); // Test piece, comment out if annoying
-	//H_Init(huart1);
+  	Magnet_Init();
 
   	while (1){
   	gyro_getxyz(huart1);
 	ACC_Read(huart1);
 	bar_use();
-
-	//H_Read(huart1);
+	Magnet_Collect();
 	HAL_Delay(100);  // C - added delay to avoid wall of text from accelerometer
-		
+	Magnet_Disable();
+	HAL_Delay(200);
     }
     /* USER CODE BEGIN 3 */
   }
